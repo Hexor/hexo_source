@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Laravel 请求的生命周期 | 河童的河</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当你使用一个工具的时候, 如果你对这个工具的内部原理和构造有所了解, 那么在使用这个工具的时候, 就会更加的有信心, 工具用起来也会更加的得心应手.">
+<meta name="keywords" content="Laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel 请求的生命周期">
+<meta property="og:url" content="http://bloghex.webdev3.ouj.com/blog/2016/11/30/Laravel-请求的生命周期/index.html">
+<meta property="og:site_name" content="河童的河">
+<meta property="og:description" content="当你使用一个工具的时候, 如果你对这个工具的内部原理和构造有所了解, 那么在使用这个工具的时候, 就会更加的有信心, 工具用起来也会更加的得心应手.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://bloghex.webdev3.ouj.com/images/laravel_lifecycle_overview.png">
+<meta property="og:updated_time" content="2018-12-13T07:21:43.165Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Laravel 请求的生命周期">
+<meta name="twitter:description" content="当你使用一个工具的时候, 如果你对这个工具的内部原理和构造有所了解, 那么在使用这个工具的时候, 就会更加的有信心, 工具用起来也会更加的得心应手.">
+<meta name="twitter:image" content="http://bloghex.webdev3.ouj.com/images/laravel_lifecycle_overview.png">
+<meta name="twitter:creator" content="@&#x2F;Hex_iN_gaMe">
+  
+    <link rel="alternate" href="/atom.xml" title="河童的河" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="blog\themes\landscape\source\css\images\favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">河童的河</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/blog/cv">Résumé</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      <a class="nav-icon" href="https://github.com/hexor" title="GitHub" target="_blank">&#61595;</a>
+      <a class="nav-icon" href="https://twitter.com/hex_in_game" title="twitter" target="_blank">&#61593;</a>
+      <a class="nav-icon" href="https://flickr.com/photos/58312400@N07" title="flickr" target="_blank">&#xf16e;</a>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+
+
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://bloghex.webdev3.ouj.com/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-Laravel-请求的生命周期" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/11/30/Laravel-请求的生命周期/" class="article-date">
+  <time datetime="2016-11-30T13:25:09.000Z" itemprop="datePublished">2016-11-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="/blog/images/laravel_lifecycle_overview.png" rel="gallery_cjpmdkuw40009sxsvybv3rh75">
+        <img src="/blog/images/laravel_lifecycle_overview.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Laravel 请求的生命周期
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当你使用一个工具的时候, 如果你对这个工具的内部原理和构造有所了解, 那么在使用这个工具的时候, 就会更加的有信心, 工具用起来也会更加的得心应手. </p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#first-things">First Things</a></li>
+<li><a href="#http-console-kernels">HTTP / Console Kernels</a><ul>
+<li><a href="#service-providers">Service Providers</a></li>
+<li><a href="#dispatch-request">Dispatch Request</a></li>
+</ul>
+</li>
+<li><a href="#focus-on-service-providers">Focus On Service Providers</a></li>
+<li><a href="#想知道更多">想知道更多</a></li>
+</ul>
+<!-- tocstop -->
+<p>今天阅读了 Laravel 官方的<a href="https://laravel.com/docs/5.2/lifecycle" target="_blank" rel="noopener">生命周期文档</a>. 这篇文章可以看做是对官方文档的翻译, 但是也加入了当前我对 Laravel 请求生命周期的理解, 同时也算是加深我对 Laravel 整体架构的印象.</p>
+<h2><span id="first-things">First Things</span></h2><p>首先, 从请求说起, 所有的来自于 web 服务器 ( Apache / Nginx ) 的请求, 都将会被转发到 <code>public/index.php</code> 这个文件处理.</p>
+<p><code>index.php</code> 中代码不多, 但这个文件是一个起始点, 从这个文件开始, Laravel 框架的其余部分就会开始陆续加载了.<br>同时, <code>index.php</code> 从 <code>bootstrap/app.php</code> 获得了一个实例, 而这也是 Laravel 框架在得到请求之后做的第一件事.</p>
+<p><br></p>
+<h2><span id="http-console-kernels">HTTP / Console Kernels</span></h2><p>通过之前得到的这个实例, Laravel 便可以生成处理请求的内核了.<br>Laravel 本身提供2种内核, HTTP 内核和 Console 内核, 2种内核分别处理不同类型的请求. 我理解的是 HTTP 内核可能是用来处理 HTTP 请求, 而 Console 内核则用来处理控制台中发送来的请求. 文章中暂时只让我们关注于 HTTP 内核, 可能这也是最常用的.</p>
+<p>HTTP 内核文件位于 <code>app/Http/Kernel.php</code>, 继承自 <code>Illuminate\Foundation\Http\Kernel</code> Kernel 这个 Class.</p>
+<p>在 <code>Illuminate\Foundation\Http\Kernel</code> Kernel Class 中, 定义了一个由 <code>bootstrappers</code> 组成的数组, 会有一个函数遍历数组中的每个 <code>bootstrapper</code>, 并执行每一个 <code>bootstrapper</code>. 这些 <code>bootstrappers</code> 在请求被真正的业务逻辑处理之前, 会执行一些包括错误处理, 日志记录, 确定应用环境等配置任务.</p>
+<p>HTTP 内核还定义了一个中间件的列表 ( a list of HTTP middleware ), 所有的请求在被处理之前, 都需要先通过这些中间件的处理. 这些中间件可以处理 HTTP session 的读写, 可以判断服务器当前是否处于维护模式, 验证 CSRF token ( 为了保护服务器不受 <a href="https://laravel.com/docs/5.2/routing#csrf-protection" target="_blank" rel="noopener">CSRF 攻击</a> ) 等等功能.</p>
+<p>最后, HTTP 内核最终用于处理请求的方法 ( <code>handle</code> method) 看起来还是很简单的. 单纯的接受一个 <code>Request</code> 以及 返回一个 <code>Response</code>.</p>
+<p>上面这些概念有的地方也许我现在还无法详细的理解, 想要充分的理解, 就需要去看 Laravel 的源码了. 但是目前这个阶段可以先不需要看源码.<br>只需要知道, 内核就是一个黑箱, 可以为你提供服务器的所有功能, 而你只需要传给内核 HTTP 请求, 黑箱就会返回 HTTP 响应了.</p>
+<h3><span id="service-providers">Service Providers</span></h3><p>在 Kernel Class <code>bootstrappers</code> 数组中, 最重要的 <code>bootstrapper</code> 任务就是载入 <code>service provider</code>, 这项任务由 RegisterProviders 和 BootProviders 2个 <code>bootstrapper</code> 来完成.</p>
+<p>所有的 service provider 都会在 <code>config/app.php</code> 中的 <code>providers</code> 中进行配置. 这些 ‘providers’ 的启动方式是: 首先所有的 provider 都会执行 register 方法, 一旦所有的 provider 都执行完毕 register 方法, <code>boot</code> 方法就会调用.</p>
+<p>Service Provider 的作用非常重要, 它会启动框架的所有组件, 包括数据库, 队列, 数据验证, 路由组件等. 也正是由于 Service Provider 启动和配置了所有 Laravel 框架的特性和功能, 所以才让它成为了整个 Laravel 启动过程中最终要的部分.</p>
+<h3><span id="dispatch-request">Dispatch Request</span></h3><p>一旦所有的 <code>bootstrapper</code> 都执行完, 所有的 Service Provider 都注册完之后, 请求终于到达了 <code>router</code>, <code>router</code> 将会把得到的请求分发给其下一级 ( 通常是一个 controller 或者另一个 router ), 当然如果设置任何 router 相关的 中间件, 中间件也会先执行.</p>
+<p><br></p>
+<h2><span id="focus-on-service-providers">Focus On Service Providers</span></h2><p>官方文档说, 大家一定要把注意力放到 Service Providers 上啊. 毕竟整个 Laravel 的工作流程简单来说就是, 创建一个实例, 注册所有的 Service Provider, 请求就可以开始被处理了. </p>
+<p>系统的默认 Service Providers 放在 <code>app/Providers</code> 目录下. 默认情况下, <code>AppServiceProvider</code> 是一个比较空的文件, 如果你想要放置自定义的 初始化任务 或者 绑定一个 service container, 这里就是做这些事情的合适位置. </p>
+<p>但是如果对一个大型的项目来说, 创建多个你自己的 Service Provider 也许更好, 从而在每个 Service Provider 中进行粒度更细分的初始化任务.</p>
+<p><br></p>
+<h2><span id="想知道更多">想知道更多</span></h2><p><a href="https://laravel.com/docs/5.2/lifecycle" target="_blank" rel="noopener">Laravel 官方文档: Request Lifecycle</a><br><a href="https://laravel-china.org/topics/2909" target="_blank" rel="noopener">Laravel 学习笔记之 Bootstrap 源码解析</a></p>
+<link href="/blog/css/prism-tomorrow.css" rel="stylesheet">
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/11/30/Laravel-请求的生命周期/" data-id="cjpmdkuw40009sxsvybv3rh75" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/11/30/Laravel-请求的生命周期/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+        Views <span id="busuanzi_value_page_pv"></span>
+      
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2016/11/29/我的-Laravel-学习过程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">我的 Laravel 学习过程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/技术/">技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/API/">API</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Auth/">Auth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Dingo/">Dingo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JWT/">JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/">Laravel 使用 JWT 实现 API Auth, 打造用户授权接口</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/12/16/Livereload-工具自动刷新前端页面/">Livereload 工具自动刷新前端页面</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/">从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/11/30/Laravel-请求的生命周期/">Laravel 请求的生命周期</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/11/29/我的-Laravel-学习过程/">我的 Laravel 学习过程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 河童<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <span id="busuanzi_container_site_uv_1">
+  Total visited <span id="busuanzi_value_site_uv"></span> times.
+</span>
+    </div>
+
+  </div>
+
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/blog/cv" class="mobile-nav-link">Résumé</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'hexor-1';
+  
+  var disqus_url = 'http://bloghex.webdev3.ouj.com/blog/2016/11/30/Laravel-请求的生命周期/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+  </div>
+</body>
+</html>

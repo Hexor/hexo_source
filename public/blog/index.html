@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>河童的河</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="技术 &amp; 生活">
+<meta property="og:type" content="website">
+<meta property="og:title" content="河童的河">
+<meta property="og:url" content="http://bloghex.webdev3.ouj.com/blog/index.html">
+<meta property="og:site_name" content="河童的河">
+<meta property="og:description" content="技术 &amp; 生活">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="河童的河">
+<meta name="twitter:description" content="技术 &amp; 生活">
+<meta name="twitter:creator" content="@&#x2F;Hex_iN_gaMe">
+  
+    <link rel="alternate" href="/atom.xml" title="河童的河" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="blog\themes\landscape\source\css\images\favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">河童的河</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/blog/cv">Résumé</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      <a class="nav-icon" href="https://github.com/hexor" title="GitHub" target="_blank">&#61595;</a>
+      <a class="nav-icon" href="https://twitter.com/hex_in_game" title="twitter" target="_blank">&#61593;</a>
+      <a class="nav-icon" href="https://flickr.com/photos/58312400@N07" title="flickr" target="_blank">&#xf16e;</a>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+
+
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://bloghex.webdev3.ouj.com/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/" class="article-date">
+  <time datetime="2018-12-13T03:12:26.000Z" itemprop="datePublished">2018-12-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="/blog/images/jwt.png" rel="gallery_cjpmdkuw00005sxsvlb1jycf1">
+        <img src="/blog/images/jwt.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/">Laravel 使用 JWT 实现 API Auth, 打造用户授权接口</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Laravel 使用 JWT 实现 API Auth, 打造用户授权接口</p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/#more">Read More</a>
+          </p>
+        
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/" data-id="cjpmdkuw00005sxsvlb1jycf1" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/API/">API</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Auth/">Auth</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Dingo/">Dingo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/JWT/">JWT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-Livereload-工具自动刷新前端页面" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/12/16/Livereload-工具自动刷新前端页面/" class="article-date">
+  <time datetime="2016-12-16T00:20:01.000Z" itemprop="datePublished">2016-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/12/16/Livereload-工具自动刷新前端页面/">Livereload 工具自动刷新前端页面</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在开发中，经常遇到这种情景：修改项目文件后，要去浏览器中刷新一下页面，检查最新的修改结果。这里介绍一个小工具，他可以在你修改特定的代码之后，自动为你刷新浏览器开发页面。</p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2016/12/16/Livereload-工具自动刷新前端页面/#more">Read More</a>
+          </p>
+        
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/12/16/Livereload-工具自动刷新前端页面/" data-id="cjpmdkuw20008sxsv4lt058u2" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/12/16/Livereload-工具自动刷新前端页面/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/" class="article-date">
+  <time datetime="2016-12-04T15:11:29.000Z" itemprop="datePublished">2016-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="/blog/images/Laravel-core-concepts.png" rel="gallery_cjpmdkuwc000ssxsv82jue7ef">
+        <img src="/blog/images/Laravel-core-concepts.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/">从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>帮助大家 ( 特别是新手 )，从1行代码开始，系统性的理解 Laravel IOC 系统的架构</p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/#more">Read More</a>
+          </p>
+        
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/" data-id="cjpmdkuwc000ssxsv82jue7ef" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-Laravel-请求的生命周期" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/11/30/Laravel-请求的生命周期/" class="article-date">
+  <time datetime="2016-11-30T13:25:09.000Z" itemprop="datePublished">2016-11-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="/blog/images/laravel_lifecycle_overview.png" rel="gallery_cjpmdkuw40009sxsvybv3rh75">
+        <img src="/blog/images/laravel_lifecycle_overview.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/11/30/Laravel-请求的生命周期/">Laravel 请求的生命周期</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当你使用一个工具的时候, 如果你对这个工具的内部原理和构造有所了解, 那么在使用这个工具的时候, 就会更加的有信心, 工具用起来也会更加的得心应手. </p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2016/11/30/Laravel-请求的生命周期/#more">Read More</a>
+          </p>
+        
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/11/30/Laravel-请求的生命周期/" data-id="cjpmdkuw40009sxsvybv3rh75" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/11/30/Laravel-请求的生命周期/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-我的-Laravel-学习过程" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/11/29/我的-Laravel-学习过程/" class="article-date">
+  <time datetime="2016-11-29T12:56:59.000Z" itemprop="datePublished">2016-11-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="/blog/images/laravel-logo1.jpg" rel="gallery_cjpmdkuwd000usxsv1lb9xg0j">
+        <img src="/blog/images/laravel-logo1.jpg" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/11/29/我的-Laravel-学习过程/">我的 Laravel 学习过程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文将介绍我学习 Laravel 时的学习计划和方法, 适时总结和思考, 以免自己方向跑偏</p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2016/11/29/我的-Laravel-学习过程/#more">Read More</a>
+          </p>
+        
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/11/29/我的-Laravel-学习过程/" data-id="cjpmdkuwd000usxsv1lb9xg0j" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/11/29/我的-Laravel-学习过程/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-Hexo-使用手册" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/11/27/Hexo-使用手册/" class="article-date">
+  <time datetime="2016-11-27T00:26:21.000Z" itemprop="datePublished">2016-11-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/11/27/Hexo-使用手册/">Hexo 常用使用手册</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/images/rivergod.png" width="50%" height="50%" align="center/"><br>本文将介绍我使用 Hexo 时的一些常用操作</p>
+        
+          <p class="article-more-link">
+            <a href="/blog/2016/11/27/Hexo-使用手册/#more">Read More</a>
+          </p>
+        
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/11/27/Hexo-使用手册/" data-id="cjpmdkuvr0000sxsvrcywc4vq" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/11/27/Hexo-使用手册/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Hexo/">Hexo</a></li></ul>
+
+      
+      
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-Laravel-入门阶段学习日记" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/11/04/Laravel-入门阶段学习日记/" class="article-date">
+  <time datetime="2016-11-04T13:33:50.000Z" itemprop="datePublished">2016-11-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2016/11/04/Laravel-入门阶段学习日记/">Laravel 入门阶段学习日记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>记录我自学 Laravel 的过程.</p>
+<font size="5"> 2016.12.20 </font>
+
+<p>今天终于把大部分的工作都完成了，也就是下面这些，总共花费了将近<code>23小时</code>的时间</p>
+<ol>
+<li><del>新建一项任务</del></li>
+<li><del>完成一项任务</del></li>
+<li><del>删除一条任务</del></li>
+<li><del>修改一条任务</del></li>
+<li><del>显示任务列表</del></li>
+<li><del>加入多用户功能，用户在登录之后，可以对自己的任务进行更改，并可以将更改保存至服务器。否则，对本地缓存的任务列表进行更改</del></li>
+<li><del>为未登录的用户设置浏览器缓存，使用缓存保存用户的任务列表，重新打开浏览器之后仍会显示之前的数据</del></li>
+<li><del>前端代码要求多种方式分别实现：</del><ol>
+<li>只使用 jQuery, 不使用其他框架</li>
+<li><del>使用 Javasript 框架，比如 Vue / Boots，但是前后端不分离实现</del></li>
+<li>使用框架，并且使用前后端分离方式实现</li>
+</ol>
+</li>
+</ol>
+<p>剩下的就是前后端分离的实现，以及纯 jQuery 的实现了，还有就是使用 Bootstrap 风格的对话框，这几点先不急着实现，先重新审视和分析一下自己的代码吧<br>
+        
+          </p><p class="article-more-link">
+            <a href="/blog/2016/11/04/Laravel-入门阶段学习日记/#more">Read More</a>
+          </p>
+        
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/11/04/Laravel-入门阶段学习日记/" data-id="cjpmdkuw10006sxsvcvjsi0pn" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/11/04/Laravel-入门阶段学习日记/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/技术/">技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/API/">API</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Auth/">Auth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Dingo/">Dingo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JWT/">JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/">Laravel 使用 JWT 实现 API Auth, 打造用户授权接口</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/12/16/Livereload-工具自动刷新前端页面/">Livereload 工具自动刷新前端页面</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/">从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/11/30/Laravel-请求的生命周期/">Laravel 请求的生命周期</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/11/29/我的-Laravel-学习过程/">我的 Laravel 学习过程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 河童<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <span id="busuanzi_container_site_uv_1">
+  Total visited <span id="busuanzi_value_site_uv"></span> times.
+</span>
+    </div>
+
+  </div>
+
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/blog/cv" class="mobile-nav-link">Résumé</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'hexor-1';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+  </div>
+</body>
+</html>

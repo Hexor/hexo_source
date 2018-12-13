@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念 | 河童的河</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="帮助大家 ( 特别是新手 )，从1行代码开始，系统性的理解 Laravel IOC 系统的架构">
+<meta name="keywords" content="Laravel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念">
+<meta property="og:url" content="http://bloghex.webdev3.ouj.com/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/index.html">
+<meta property="og:site_name" content="河童的河">
+<meta property="og:description" content="帮助大家 ( 特别是新手 )，从1行代码开始，系统性的理解 Laravel IOC 系统的架构">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://bloghex.webdev3.ouj.com/images/Laravel-core-concepts.png">
+<meta property="og:updated_time" content="2018-12-13T07:21:43.148Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念">
+<meta name="twitter:description" content="帮助大家 ( 特别是新手 )，从1行代码开始，系统性的理解 Laravel IOC 系统的架构">
+<meta name="twitter:image" content="http://bloghex.webdev3.ouj.com/images/Laravel-core-concepts.png">
+<meta name="twitter:creator" content="@&#x2F;Hex_iN_gaMe">
+  
+    <link rel="alternate" href="/atom.xml" title="河童的河" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="blog\themes\landscape\source\css\images\favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">河童的河</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/blog/cv">Résumé</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      <a class="nav-icon" href="https://github.com/hexor" title="GitHub" target="_blank">&#61595;</a>
+      <a class="nav-icon" href="https://twitter.com/hex_in_game" title="twitter" target="_blank">&#61593;</a>
+      <a class="nav-icon" href="https://flickr.com/photos/58312400@N07" title="flickr" target="_blank">&#xf16e;</a>
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+
+
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://bloghex.webdev3.ouj.com/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<article id="post-从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/" class="article-date">
+  <time datetime="2016-12-04T15:11:29.000Z" itemprop="datePublished">2016-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/blog/categories/技术/">技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="/blog/images/Laravel-core-concepts.png" rel="gallery_cjpmdkuwc000ssxsv82jue7ef">
+        <img src="/blog/images/Laravel-core-concepts.png" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>帮助大家 ( 特别是新手 )，从1行代码开始，系统性的理解 Laravel IOC 系统的架构</p>
+<a id="more"></a>
+<!-- toc -->
+<ul>
+<li><a href="#概览">概览</a><ul>
+<li><a href="#本文的目的">本文的目的</a></li>
+<li><a href="#阅读之前">阅读之前</a></li>
+<li><a href="#阅读之后">阅读之后</a></li>
+</ul>
+</li>
+<li><a href="#正文">正文</a><ul>
+<li><a href="#一个基础版的-ioc-container">一个基础版的 IOC Container</a></li>
+<li><a href="#为什么理解-ioc-container-对于理解-laravel-架构是如此的重要">为什么理解 IOC Container 对于理解 Laravel 架构是如此的重要？</a></li>
+<li><a href="#该如何使用-laravel-的-ioc-container-service-container">该如何使用 Laravel 的 IOC Container（ Service Container ）？</a><ul>
+<li><a href="#如何不通过-service-provider-直接使用-ioc-container">如何不通过 Service Provider 直接使用 IOC Container？</a></li>
+<li><a href="#为何大多数情况都通过-service-provider-来使用-ioc-container">为何大多数情况都通过 Service Provider 来使用 IOC Container？</a></li>
+<li><a href="#如何通过-service-provider-来使用-ioc-container">如何通过 Service Provider 来使用 IOC Container？</a><ul>
+<li><a href="#laravel-的发明者是如何通过-service-provider-来使用-ioc-container-为-laravel-框架添加特性和功能的">Laravel 的发明者是如何通过 Service Provider 来使用 IOC Container 为 Laravel 框架添加特性和功能的？</a></li>
+<li><a href="#facade-是如何使用的">Facade 是如何使用的？</a></li>
+<li><a href="#如何将某个类通过-service-provider-的方式-bind-到-laravel-的-ioc-container-中">如何将某个类通过 Service Provider 的方式， <code>bind</code> 到 Laravel  的 IOC Container 中？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#总结">总结</a></li>
+<li><a href="#后续">后续</a></li>
+<li><a href="#想要知道更多">想要知道更多</a></li>
+</ul>
+<!-- tocstop -->
+<h2><span id="概览">概览</span></h2><h3><span id="本文的目的">本文的目的</span></h3><p>帮助大家 ( 特别是新手 )，从1行代码开始，系统性的理解   Laravel   IOC 系统的架构，从而了解 </p>
+<ul>
+<li>Service Container</li>
+<li>Service Providers</li>
+<li>Facades</li>
+<li>Contracts </li>
+</ul>
+<p>上述4点相关的核心概念。</p>
+<p>之所以说是系统性，是因为我不打算像官方文档一样，把上面这4点分成4个部分来说，因为实在是太难懂了。</p>
+<h3><span id="阅读之前">阅读之前</span></h3><p>在阅读本文之前，你<strong>必须</strong>了解</p>
+<ul>
+<li>什么是 IOC</li>
+<li>如何构造一个IOC</li>
+<li>IOC 为系统的架构提供了哪些好处</li>
+</ul>
+<p>关于 IOC 的问题你可以从<a href="https://laravel-china.org/topics/789" target="_blank" rel="noopener">这篇文章</a>中得到很好的答案。</p>
+<p>当然，你最好也能从<a href="https://hexor.github.io/2016/11/30/Laravel-%E8%AF%B7%E6%B1%82%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_blank" rel="noopener">这里</a>了解一下 Laravel 请求的生命周期。</p>
+<h3><span id="阅读之后">阅读之后</span></h3><p>希望大家能通过阅读本篇文章对上述4个核心概念有更好的理解，至少。。别人问你你能答出来这4点都是干什么的</p>
+<p><br><br><br></p>
+<h2><span id="正文">正文</span></h2><p><br></p>
+<h3><span id="一个基础版的-ioc-container">一个基础版的 IOC Container</span></h3><p>也许你以前就知道什么是 IOC， 也许你是从上面那篇文章才开始对 IOC 有懵懂的认识。 </p>
+<p>现在我们都从同一个起点出发. 就是再来重新再来写一个基础版的 IOC Container.</p>
+<p>为什么要写这个基础版的 IOC Container 出来呢， 因为 Laravel   框架的 IOC Container 原理上跟上面的这个基础版是一模一样的, 包括方法的名字, 参数的传入方式等.</p>
+<p>而且在下文，当我使用 <code>bind</code> 和 <code>make</code> 2个词的时候，我指的就是 Container 中的这2个方法。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Container</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="keyword">protected</span> $binds;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">protected</span> $instances;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">bind</span><span class="params">($abstract, $concrete)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="comment">//<span class="doctag">Todo:</span> 向 container 添加一种对象的的生产方式</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//$abstract: 第一个参数 $abstract, 一般为一个字符串(有时候也会是一个接口), 当你需要 make 这个类的对象的时候, 传入这个字符串(或者接口), 这样make 就知道制造什么样的对象了</span></span><br><span class="line">    <span class="comment">//$concrete: 第二个参数 $concrete, 一般为一个 Closure 或者 一个单例对象, 用于说明制造这个对象的方式</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ($concrete <span class="keyword">instanceof</span> Closure) &#123;</span><br><span class="line">      <span class="keyword">$this</span>-&gt;binds[$abstract] = $concrete;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">$this</span>-&gt;instances[$abstract] = $concrete;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">make</span><span class="params">($abstract, $parameters = [])</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="comment">//<span class="doctag">Todo:</span> 生产一种对象</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//$abstract: 在bind方法中已经介绍过</span></span><br><span class="line">    <span class="comment">//$parameters: 生产这种对象所需要的参数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;instances[$abstract])) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;instances[$abstract];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    array_unshift($parameters, <span class="keyword">$this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> call_user_func_array(<span class="keyword">$this</span>-&gt;binds[$abstract], $parameters);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="为什么理解-ioc-container-对于理解-laravel-架构是如此的重要">为什么理解 IOC Container 对于理解 Laravel 架构是如此的重要？</span></h3><p>因为在 Laravel 中，你所能使用到的 Laravel 的特性和功能几乎全部是由 IOC Container 实现的。</p>
+<p>比如</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cache::get(<span class="string">'key'</span>); </span><br><span class="line">Route::get(<span class="string">'/'</span>, <span class="string">'HomeController@index'</span>);</span><br></pre></td></tr></table></figure>
+<p>Cache 和 Route 都是通过把他们各自的实现类 <code>bind</code> 到某个  Laravel 的 Container 后，那个 Container 所 <code>make</code> 出的一个实例。</p>
+<p>也许你现在有些疑问：到底是在哪进行 <code>bind</code> 操作的，又是 <code>bind</code> 到哪一个 Container 了，这个 Container 又是在什么地方 <code>make</code> 了他们？ </p>
+<p>这些问题现在你都不需要知道，看到后面你会有答案。现在你只需要知道</p>
+<p><strong>IOC Container 组成了  Laravel 的架构，是  Laravel  的核心机制。</strong></p>
+<p>在 Laravel 中，他们把这个叫做  Laravel  的 Service Container</p>
+<p>Service Container 是今天的第一个角色，主角。</p>
+<p><br></p>
+<h3><span id="该如何使用-laravel-的-ioc-container-service-container">该如何使用 Laravel 的 IOC Container（ Service Container ）？</span></h3><p>如果想要使用 Laravel 的 IOC Container，也就是说想要用 IOC 的机制去 <code>make</code> 某种对象, 那么你就必须先 <code>bind</code> 这个对象的类到   Laravel    的 IOC Container 中, 才能把这种对象 <code>make</code> 出来。</p>
+<p>至此，可以请出今天第二个角色了，Service Provider</p>
+<p>为啥 Service Provider 突然蹦出来了呢，因为在  Laravel  中，我们大体可以上有2种方式去使用 IOC Container：</p>
+<ol>
+<li>通过 Service Provider 来使用IOC Container</li>
+<li>不通过 Service Provider 直接使用 IOC Container</li>
+</ol>
+<p>大多数情况下，我们使用第一种方式。为什么呢，我们先从第二种开始说起。</p>
+<h4><span id="如何不通过-service-provider-直接使用-ioc-container">如何不通过 Service Provider 直接使用 IOC Container？</span></h4><p>Laravel 有一个核心类，叫做 Application，这个继承了 Container，所以很显然，这个类是一个 IOC Container</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 该类的命名空间</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 该类的声明</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span> <span class="keyword">extends</span> <span class="title">Container</span> <span class="keyword">implements</span> <span class="title">ApplicationContract</span>, <span class="title">HttpKernelInterface</span></span></span><br></pre></td></tr></table></figure>
+<p>在  Laravel 程序启动的时, 在 bootstrap/app.php  里面实例化了这个类，并把这个类的实例交给了 $app 。如果你了解  <a href="https://hexor.github.io/2016/11/30/Laravel-%E8%AF%B7%E6%B1%82%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_blank" rel="noopener">Laravel  请求的生命周期</a>，那你就会对这里的程序流程更清楚一些，不过不了解也没有大碍。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 bootstrap/app.php 中实例化了该类</span></span><br><span class="line">$app = <span class="keyword">new</span> Illuminate\Foundation\Application(</span><br><span class="line">    realpath(<span class="keyword">__DIR__</span>.<span class="string">'/../'</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>比如我们现在需要不通过 Service Provider 直接使用 IOC Container ，就是要使用上面的这个 IOC Container， 也就是 $app 。</p>
+<p>很简单， 我们要做的第一件事就是 <code>bind</code>， 第二件事就是 <code>make</code></p>
+<p>新建一个 Post 类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Post</span> <span class="keyword">extends</span> <span class="title">Model</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="keyword">public</span> $d = <span class="string">"123"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后 <code>bind</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">App::bind(<span class="string">'post'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> App::make(<span class="string">'App\Post'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>最后 <code>make</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$post = App::make(<span class="string">'post'</span>);</span><br><span class="line"><span class="keyword">return</span> $post-&gt;d; <span class="comment">//将会返回 "123"</span></span><br></pre></td></tr></table></figure>
+<p>就像这样，完全不使用 service provider，我们也完成了对  Laravel  IOC Container 的使用。</p>
+<p>也许你会问，为什么我们直接用了 App 而不是 $app，这是因为 Larave 使用了 Facades 的特性，来让你在程序的各处都能方便的得到 $app，或者说 Application 类的这个实例。</p>
+<p>也许你又会问，Facades 又是个啥？回答你，现在先别管，等下就知道。不过提前告诉你，Facades 也是今天的角色之一。</p>
+<h4><span id="为何大多数情况都通过-service-provider-来使用-ioc-container">为何大多数情况都通过 Service Provider 来使用 IOC Container？</span></h4><p>我们知道，有时候我们的类、模块会有需要其他类和组件的情况，为了保证初始化阶段不会出现所需要的模块和组件没有注册的情况，laravel 将注册和初始化行为进行拆分，注册的时候就只能注册，初始化的时候就是初始化。拆分后的产物就是现在的 服务提供者。</p>
+<p>可以想象这样一个场景, 你要绑定3个类 A B C 到 IOC Container 中。 A，B，C 都是非常复杂的类。在 <code>bind</code> A 时, 引用了一个类 B 的实例, 那么想要获得类 B 的实例，就需要 B 已经被 <code>bind</code>，只有这样，我们的 IOC Container 才有能力 <code>make</code> 出一个 B 的实例。 而在 <code>bind</code> B 时, 恰好又需要 C 的实例. </p>
+<p>如果是这样的逻辑, 那么在 <code>bind</code> A B C时, 就必须手动的严格安排 <code>bind</code> 的次序, 而且这只是3个类的情况, 如果有几十个类的话, 人工已经无法完成了.</p>
+<p>而这时就需要 Service Provider 的作用了。</p>
+<p>引用一段别人的话</p>
+<blockquote>
+<p>我们知道，有时候我们的类、模块会有需要其他类和组件的情况，为了保证初始化阶段不会出现所需要的模块和组件没有注册的情况，laravel 将注册和初始化行为进行拆<br>分，注册的时候就只能注册，初始化的时候就是初始化。拆分后的产物就是现在的 Service Provider。</p>
+</blockquote>
+<h4><span id="如何通过-service-provider-来使用-ioc-container">如何通过 Service Provider 来使用 IOC Container？</span></h4><p>关于如何通过 Service Provider 来使用 IOC Container，我通过下面的例子来说明</p>
+<h5><span id="laravel-的发明者是如何通过-service-provider-来使用-ioc-container-为-laravel-框架添加特性和功能的">Laravel 的发明者是如何通过 Service Provider 来使用 IOC Container 为 Laravel 框架添加特性和功能的？</span></h5><p>我们从这行代码说起，这里终于是标题中提到的那 <strong>1</strong> 行代码啦。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Route::get(<span class="string">'/'</span>, <span class="string">'HomeController@index'</span>);</span><br></pre></td></tr></table></figure>
+<p>你是无法找到对 Route 类的声明的，为啥呢，因为使用了别名。别名是  PHP  的一个特性（ class_alias 方法 ）。</p>
+<p>Route 是如何配置成为别名的呢， 在 <code>app/config/app.php</code> 中， 我们可以看到  Laravel  把所有的别名配置都放在了这个数组中</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'aliases'</span> =&gt; [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">'Route'</span> =&gt; Illuminate\Support\Facades\Route::class,</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>更细节的，关于 Laravel  是如何把这个数组里的别名都配置好的，本文就不再提及，在源代码中搜索 class_alias 就可以看到相关内容。</p>
+<p>继续往下说，我们看到 Route 实际上是代表了 <code>Illuminate\Support\Facades\Route::class</code> 这个类， 我们找到这个类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">Facades</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> \Illuminate\Routing\Router</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Route</span> <span class="keyword">extends</span> <span class="title">Facade</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getFacadeAccessor</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'router'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到这个类之后，并没有找到之前 Route 调用的 <code>get</code> 方法，此时我们再看里面的这行注释，<code>@see \Illuminate\Routing\Router</code>，他提示我们去找这个位置，那我们就去找一下，我们又发现了一个 Router 类，而这个 Router 类中，是有 <code>get</code> 方法的，看起来这里似乎就是 Route 的真实身份了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Routing</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Router</span> <span class="keyword">implements</span> <span class="title">RegistrarContract</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register a new GET route with the router.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>  string  $uri</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>  \Closure|array|string|null  $action</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> \Illuminate\Routing\Route</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">($uri, $action = null)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;addRoute([<span class="string">'GET'</span>, <span class="string">'HEAD'</span>], $uri, $action);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那  Laravel  是如何为 <code>Illuminate\Support\Facades\Route::class</code> 这个类找到他的真实身份的呢？</p>
+<p>此时，正式请出我们今天的三号角色，Facades。</p>
+<p><em>先纠正一下大家的读音，有的人可能会把这个词读做 fei kei de，其实这个词读作 [fə’sɑd]，拼音差不多是 fo sa de</em><br><em>词典中，facade 是一个名词。翻译为: 正面；表面；外观</em><br><em>读音:   英  [fə’sɑːd]   ；美  [fə’sɑd]</em></p>
+<p><strong>Facade 的作用是用一个简单易记的语法，让你从  Laravel  的 IOC Container 中方便的 <code>make</code> 出你想要的类的对象。</strong></p>
+<p>之前我们看到 <code>class Route extends Facade</code>，说明 Route 也是一个 Facade，那这个 Route 的作用就是：</p>
+<p>让我们通过这种简单的语法 Route::get(…)，去 Laravel  的 IOC Container 中方便的 <code>make</code> 出上面的 Route 的真实身份 <code>Router</code>。</p>
+<h5><span id="facade-是如何使用的">Facade 是如何使用的？</span></h5><p>Facade 是如何做到上面所描述的事情的呢？ 下面进行讲解。</p>
+<p>首先， <code>class Route extends Facade</code>， Route 继承自 Facade 类，Route 类又调用了静态的 <code>get</code> 方法，我们在 Route 类，或者是他的父类 Facade 中都是无法找到这个 <code>get</code> 方法的。 但是在 Facade 类中，我们可以发现有一个 <code>__callStatic()</code> <a href="http://blog.csdn.net/liutingxu1/article/details/17655049" target="_blank" rel="noopener">魔术方法</a>，这个方法的作用就是：如果你想要调用的静态方法在类的定义中并没有声明，那么就会执行 <code>__callStatic()</code>。在我们当前的情景中，静态方法 <code>get</code> 并没有被声明，那么当然，我们的类就会转而调用 <code>__callStatic()</code> 。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">__callStatic</span><span class="params">($method, $args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $instance = <span class="keyword">static</span>::getFacadeRoot();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (! $instance) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">'A facade root has not been set.'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (count($args)) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> $instance-&gt;$method();</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> $instance-&gt;$method($args[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> $instance-&gt;$method($args[<span class="number">0</span>], $args[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">return</span> $instance-&gt;$method($args[<span class="number">0</span>], $args[<span class="number">1</span>], $args[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            <span class="keyword">return</span> $instance-&gt;$method($args[<span class="number">0</span>], $args[<span class="number">1</span>], $args[<span class="number">2</span>], $args[<span class="number">3</span>]);</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> call_user_func_array([$instance, $method], $args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们看 <code>__callStatic()</code> 的执行过程。首先看 <code>getFacadeRoot()</code> 是如何执行的</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getFacadeRoot</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">static</span>::resolveFacadeInstance(<span class="keyword">static</span>::getFacadeAccessor());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在最初，定义 Route 类时，我们只实现了一个方法 <code>getFacadeAccessor()</code>，这时我们当初定义的字符串，就会在此处用到了，所以上面这个函数，实际上返回的内容就是 <code>static::resolveFacadeInstance(&quot;router&quot;);</code></p>
+<p>我们继续看 <code>resolveFacadeInstance</code> 这个函数的执行过程</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">resolveFacadeInstance</span><span class="params">($name)</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="comment">//判断是否为对象，当然不是了，$name 是字符串</span></span><br><span class="line">    <span class="keyword">if</span> (is_object($name)) &#123;</span><br><span class="line">        <span class="keyword">return</span> $name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//判断 resolvedInstance 这个数组中是否存了 $name 相关的信息，当然也没有，因为我们假设程序是第一次执行这里</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">static</span>::$resolvedInstance[$name])) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static</span>::$resolvedInstance[$name];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 返回 static::$app[$name]，同时把得到的结果保存到上面验证的数组中</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">static</span>::$resolvedInstance[$name] = <span class="keyword">static</span>::$app[$name];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以我们的程序执行了最后的一个 return， 返回了 static::$app[‘router’] 这个值。<br>还记得 $app 吗，他就是前面说过的 Laravel  Application 类的实例化对象，这个类是一个 IOC Container，实例化过程发生在  Laravel  最开始的时候。</p>
+<p>在 Facade 初始化的时候，也让自己有了一个 <code>static::$app</code> 这个就是 Application 类的实例化对象</p>
+<p>而 $app 其实并没有 ‘router’ 这个属性，那为什么可以这样调用呢？ 是因为 Application 继承了 Container， 而 Container 又继承了 ArrayAccess 这个类。正是由于 ArrayAccess 的存在，以及 Container 实现了 ArrayAccess 的下面这个方法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">offsetGet</span><span class="params">($key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;make($key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以，当我们使用 $app[‘router’] 时，实际上是执行了 $app-&gt;make(‘router’)，到这里已经比较明显了，这里就是从 $app 这个 IOC Container 中，<code>make</code> 了一个 router 的实例。</p>
+<p>已经绕的有点远了，不过还好，我们终于要回去了。到最初的 <code>__callStatic()</code> 中的 </p>
+<p>$instance = static::getFacadeRoot();</p>
+<p>也就相当于 </p>
+<p>$instance = $app-&gt;make(‘router’)</p>
+<p><code>__callStatic()</code> 继续往下执行，想一下我们最初的那条代码 </p>
+<p><code>Route::get(&#39;/&#39;, &#39;HomeController@index&#39;);</code>， 有2个参数，所以会执行到 case 2 这条语句，</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> $instance-&gt;$method($args[<span class="number">0</span>], $args[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<p>到这里，我们的 $instance 就是我们的 IOC Container <code>make</code> 出的具有实际功能的实例，这个实例将会执行这个实例的类所声明过的 <code>get</code> 方法，并使用这两个参数：’/‘ 和 ‘HomeController@index’。</p>
+<h5><span id="如何将某个类通过-service-provider-的方式-bind-到-laravel-的-ioc-container-中">如何将某个类通过 Service Provider 的方式， <code>bind</code> 到 Laravel  的 IOC Container 中？</span></h5><p>上面通过 <code>Route::get(&#39;/&#39;, &#39;HomeController@index&#39;);</code> 这行代码背后的故事，让我们知道了 Facade 是用来帮我们从 IOC Container 中 <code>make</code> 实例的。</p>
+<p>文章一开始就讲了，既然你要 <code>make</code>， 必定要先 <code>bind</code>。<br>上面还讲过，为什么通常情况下都是通过 Service Provider 来 <code>bind</code>。</p>
+<p>那么我们现在就还是以 Route 为例子，来看看  Laravel  的开发者是如何通过 Service Provider 来 <code>bind</code> 类的。</p>
+<p>在之前的 基础版 IOC Container 中, 我们看到 不论是 <code>bind</code> 还是 <code>make</code> 都有一个 key，用来查找和保存我们 <code>bind</code> 过的类。<br>上文说过，代码实际执行了  $app-&gt;make(‘router’)，那显然，这个 key 此时就是 ‘router’。我们可以肯定，在之前进行 <code>bind</code> 操作的时候，也一定用到了这个个字符串 ‘router’。</p>
+<p><a href="https://laravel.com/docs/5.3/providers" target="_blank" rel="noopener">官方文档</a>的 Service Provider 这一章中描述了 如何注册一个 Service Provider（这里就不做过多介绍），</p>
+<p>以及所有的 Service Provider 都在 <code>config/app.php</code> 中被注册，</p>
+<p>在 <code>config/app.php</code> 中，很容易就能找到跟我们的 Route 相关的， 也就是 <code>App\Providers\RoutingServiceProvider::class,</code></p>
+<p>按照这个路径我们找到这个 Service Provider</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RoutingServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register the service provider.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;registerRouter();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;registerUrlGenerator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;registerRedirector();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;registerPsrRequest();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;registerPsrResponse();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;registerResponseFactory();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register the router instance.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">registerRouter</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app[<span class="string">'router'</span>] = <span class="keyword">$this</span>-&gt;app-&gt;share(<span class="function"><span class="keyword">function</span> <span class="params">($app)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Router($app[<span class="string">'events'</span>], $app);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>就像我们预计的那样，和官方文档中说的一样，在这个 Serivce Provider 的 <code>register()</code> 方法中，完成了 <code>bind</code> 的动作, 而 <code>make</code> 实例的方法也写在了里面， 也就是</p>
+<p><code>new Router</code>， 这个 Router 类去提供实际的功能。</p>
+<p>既然说到 Router 类了，那就不得不提一下我们的4号角色 Contract。</p>
+<p>Router 类是为他人提供服务的功能类，比如说上文的 <code>get</code> 方法，这就是一个功能，看一下 Router 类的代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Routing</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Routing</span>\<span class="title">Registrar</span> <span class="title">as</span> <span class="title">RegistrarContract</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Router</span> <span class="keyword">implements</span> <span class="title">RegistrarContract</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">use</span> <span class="title">Macroable</span>;</span><br></pre></td></tr></table></figure>
+<p>可以看到 Router 类实现了 RegistrarContract 这个接口，这个接口的命名空间位于 Illuminate\Contracts 之下，而这种接口在  Laravel  中就被称为 Contrast。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Illuminate</span>\<span class="title">Contracts</span>\<span class="title">Routing</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Registrar</span></span></span><br></pre></td></tr></table></figure>
+<p>那这种接口有啥好处呢， 跟普通的 interface 有什么不同？</p>
+<p>答案可能让大家失望了，并没有什么不同。那为什么要叫俩名呢，我觉得你可以这样理解：</p>
+<p>interface 这个词，在编程领域的有太广泛的应用了。但在  Laravel  框架中，特别是在框架的 Illuminate\Contracts 这个命名空间下的这些  Laravel  框架自带的接口们，我们把这些接口特指为 Contrast。</p>
+<p><br><br><br><br></p>
+<h2><span id="总结">总结</span></h2><p>这篇文章写了蛮久，资料也看了很多，源代码也翻了不少，好在最终总算能让我感觉把这件事情的几个重要的点都描述清楚。</p>
+<p>但是还有一些遗憾，比如在最初写文章的时候还希望能让大家了解 「如何写一个自己的 Service Provider」，但无奈本文篇幅已经太长，而且这部分内容不是太难，网上相关资料也比较多，就不再在本文中详述了。</p>
+<p>再比如 「如何写一个自己的 Facade」。</p>
+<p>以后可能会再添加吧。</p>
+<p>多谢能为我提供资料的作者们。</p>
+<p>大家对本文有什么看法和问题都欢迎评论，有错误也非常感谢你能帮我指出。毕竟能帮到别人才是我写这片文章的最重要的目的。还有一个小小的目的，最近在找一份  Laravel  的实习或者初级开发的工作，怕面试官问我 Laravel 的几个核心概念我答不上来。</p>
+<p><br></p>
+<h2><span id="后续">后续</span></h2><p>Facade 不仅仅是  Laravel  框架中的一个类，而且 Facade 是一种设计模式。</p>
+<p>维基百科是这样描述的：</p>
+<blockquote>
+<p>The Facade design pattern is often used when a system is very complex or difficult to understand because the system has a large number of interdependent classes or its source code is unavailable. This pattern hides the complexities of the larger system and provides a simpler interface to the client.     </p>
+</blockquote>
+<p>我翻译过后大概就是：<br>当一个系统过于复杂，庞大和难以理解时，Facade 设计模式就经常会被使用到。难以理解的原因通常是由于这些系统中存在大量相互依赖的类，而这些类的源代码有时候你是无法找到的。Facade 设计模式可以帮助庞大的系统隐藏其背后的复杂性，并且提供了一个更加清晰而简单的给需要这个系统的客户端使用。</p>
+<h2><span id="想要知道更多">想要知道更多</span></h2><p>感谢以下的作者们提供思路。</p>
+<p><a href="https://laravel-china.org/topics/789" target="_blank" rel="noopener">Laravel 学习笔记 —— 神奇的服务容器</a></p>
+<p><a href="http://stackoverflow.com/questions/33873675/differences-between-contracts-and-facades-laravel" target="_blank" rel="noopener">Stackoverflow 上的问答：Differences between contracts and facades laravel?  </a></p>
+<p><a href="http://ju.outofmemory.cn/entry/136407" target="_blank" rel="noopener">Laravel-Facade 实现原理</a></p>
+<p><a href="https://segmentfault.com/a/1190000004946198" target="_blank" rel="noopener">想对 Contracts 了解更多可以看这里：Laravel 之 Contracts 和 Facades</a></p>
+<p><a href="http://larabase.com/collection/1/post/49" target="_blank" rel="noopener">Laravel 5.1 文档攻略 ——Facades</a></p>
+<p><a href="http://blog.11010.net/laravel-help-understand" target="_blank" rel="noopener">Laravel 核心要点的个人理解帮助</a></p>
+<p><a href="https://vimeo.com/88888213" target="_blank" rel="noopener">vimeo 上的视频教程：Laravel Architecture - Part 1: The IoC Container</a></p>
+<p><a href="https://laravel.com/docs/5.3" target="_blank" rel="noopener"> Laravel  官方文档 </a></p>
+<link href="/blog/css/prism-tomorrow.css" rel="stylesheet">
+      
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://bloghex.webdev3.ouj.com/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/" data-id="cjpmdkuwc000ssxsv82jue7ef" class="article-share-link">Share</a>
+      
+        <a href="http://bloghex.webdev3.ouj.com/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/#disqus_thread" class="article-comment-link">留言</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+
+      
+      
+        Views <span id="busuanzi_value_page_pv"></span>
+      
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2016/12/16/Livereload-工具自动刷新前端页面/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Livereload 工具自动刷新前端页面
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2016/11/30/Laravel-请求的生命周期/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Laravel 请求的生命周期</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/技术/">技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/API/">API</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Auth/">Auth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Dingo/">Dingo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JWT/">JWT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Laravel/">Laravel</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/12/13/Laravel-使用-JWT-实现-API-Auth,-打造用户授权接口/">Laravel 使用 JWT 实现 API Auth, 打造用户授权接口</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/12/16/Livereload-工具自动刷新前端页面/">Livereload 工具自动刷新前端页面</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/">从 1 行代码开始，带你系统性的理解   Laravel  Service Container 的核心概念</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/11/30/Laravel-请求的生命周期/">Laravel 请求的生命周期</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2016/11/29/我的-Laravel-学习过程/">我的 Laravel 学习过程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 河童<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <span id="busuanzi_container_site_uv_1">
+  Total visited <span id="busuanzi_value_site_uv"></span> times.
+</span>
+    </div>
+
+  </div>
+
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/blog/cv" class="mobile-nav-link">Résumé</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'hexor-1';
+  
+  var disqus_url = 'http://bloghex.webdev3.ouj.com/blog/2016/12/04/从-1-行代码开始，带你系统性的理解-Laravel-Service-Container-系统的核心概念/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+  </div>
+</body>
+</html>
